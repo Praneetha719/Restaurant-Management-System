@@ -1,85 +1,161 @@
-🍽️ Restaurant Management System — Flask + SQLite
+🍽️ Restaurant Management System (Flask + SQLite)
 
-A lightweight and beginner-friendly web application built using Flask, SQLite, HTML/CSS, and Jinja2.
-This project manages menu items, orders, billing, and user roles (Admin + Cashier).
+A simple and efficient Restaurant Management System built using Flask, SQLite, and Jinja2 templates, featuring Admin and Cashier user roles.
+This project manages menu items, orders, user access, and billing in a lightweight web environment.
 
-🚀 Features
+📌 Features
 🔑 User Roles
 👨‍💼 Admin
 
-Add, update, and delete menu items
+Add, edit, and delete menu items
 
-Manage categories (e.g., Starters, Drinks, Main Course)
+Manage user accounts (add/edit/delete Cashiers)
 
-Create and manage user accounts (Cashiers)
+View daily and monthly sales reports
 
-View daily sales report
-
-Full access to all system functionalities
+Full control over menu & system settings
 
 💵 Cashier
 
-Create new customer orders
+Create customer orders
+
+Add menu items to cart
 
 Generate and print bills
 
-Apply discounts
+View only menu items (no editing)
 
-View only menu items (cannot edit)
+Handles customer checkouts
 
-View orders handled by themselves
-
-📌 Core Functionalities
-🧾 Menu Management (Admin)
+🧾 Core Modules
+🍔 Menu Management (Admin)
 
 Add new food items (name, price, category)
 
-Update existing items
+Edit item details
 
-Delete items
+Delete menu items
 
-Auto-update changes across all cashier screens
+Menu automatically updates for Cashiers
 
-🛒 Order Management (Cashier)
+🛒 Order & Billing System (Cashier)
 
-Add items to order cart
+Select items and add to order cart
 
-Calculate total amount
+Auto calculation of total + taxes
 
-Apply taxes + discounts
+Discount option (manual or predefined)
 
-Generate printable bill
+Generates printable invoice
 
-Save order details to database
+Saves order to database
 
 📊 Reports (Admin)
 
-Daily total sales
+Total sales for the day
 
-Number of orders handled
+Order count
 
-Cashier-wise performance
+Sales grouped by Cashier
 
-Export data to CSV
+Export reports to CSV
 
-👥 User Authentication
+👥 Authentication System
 
-Login system for Admin and Cashier
+Secure login
 
-Password hashing for security
+Password hashing
 
-Session-based authentication
+Role-based access control (Admin/Cashier)
+
+🛠️ Tech Stack
+Layer	Technology
+Backend	Flask
+Database	SQLite
+Frontend	HTML, CSS, JavaScript
+Templates	Jinja2
+Authentication	Flask Sessions
+Reporting (optional)	Chart.js
+📁 Project Structure
+restaurant_management_system/
+│── app.py
+│── auth.py
+│── database.py
+│── requirements.txt
+│── README.md
+│
+├── instance/
+│   └── restaurant.db
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+├── templates/
+│   ├── base.html
+│   ├── login.html
+│   ├── admin_dashboard.html
+│   ├── cashier_dashboard.html
+│   ├── menu.html
+│   ├── add_item.html
+│   ├── update_item.html
+│   ├── order_page.html
+│   └── bill.html
+│
+└── models/
+    └── menu_model.py
+
+▶️ Installation & Setup
+1️⃣ Clone the Repository
+git clone https://github.com/your-username/restaurant-management-system
+cd restaurant-management-system
+
+2️⃣ Install Dependencies
+pip install -r requirements.txt
+
+3️⃣ Initialize the Database
+python database.py
+
+4️⃣ Run the Application
+python app.py
+
+🌐 Access the App
+
+Visit in your browser:
+
+http://127.0.0.1:5000
+
+📸 Screenshots (Add After Uploading)
+
+Add the following images in your GitHub repo and embed them:
+
+![Login Page](screenshots/login.png)
+![Admin Dashboard](screenshots/admin_dashboard.png)
+![Cashier Order Page](screenshots/order_page.png)
+![Generated Bill](screenshots/bill.png)
 
 🔮 Future Enhancements
 
 Inventory management
 
-Online ordering (customer portal)
-
-Role-based navigation UI
-
-Adding GST/Tax configuration in Admin panel
-
-Email/SMS receipt generation
-
 Table reservation system
+
+Printer support for receipts
+
+GST/Tax configuration panel
+
+Customer mobile ordering app
+
+Dark mode UI
+
+Role-based dashboards with charts
+
+🤝 Contribution
+
+Contributions are welcome!
+Feel free to submit pull requests or open issues.
+
+📜 License
+
+This project is licensed under the MIT License.
