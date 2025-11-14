@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Billing</h2>
+<div class="billing-container">
+    <div class="menu-section">
+        <h3>Menu Items</h3>
+        <table>
+            <tr><th>Name</th><th>Price</th><th>Quantity</th><th>Action</th></tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>${{ '%.2f'|format(item.price) }}</td>
+                <td>
+                    <input type="number" id="qty_{{ item.id }}" min="1" value="1" style="width: 60px;">
+                </td>
+                <td>
+                    <button onclick="addToBill({{ item.id }}, '{{ item.name }}', {{ item.price }})" class="button-small">Add</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+    <div class="bill-section">
+        <h3>Current Bill</h3>
+        <table id="billTable">
+            <tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th><th>Action</th></tr>
+            <tr id="emptyBill"><td colspan="5">No items added yet</td></tr>
+        </table>
+        <div class="bill-total">
+            <strong>Total: $<span id="totalAmount">0.00</span></strong>
+        </div>
+        <button onclick="createOrder()" class="button" id="checkoutBtn" disabled>Checkout</button>
+        <button onclick="clearBill()" class="button button-secondary">Clear Bill</button>
+    </div>
+</div>
+
+<script>
+let billItems = [];
+let billTotal = 0;
+
+function addToBill(itemId, itemName, itemPrice) {
+    const qty = parseInt(document.getElementById('qty_' + itemId).value) || 1;
+    const existingItem = billItems.find(item => item.id === itemId);
+    
+    if (existingItem) {
+        existingItem.quantity += qty;
+    } else {
+        billItems.push({
+            id: itemId,
+            name: itemName,
+            price: itemPrice,
+            quantity: qty
+        });
+    }
+    
+    updateBillDisplay();
+}
+
+function removeFromBill(itemId) {
+    billItems = billItems.filter(item => item.id !== itemId);
+    updateBillDisplay();
+}
+
+function updateBillDisplay() {
+    const billTable = document.getElementById('billTable');
+    const emptyRow = document.getElementById('emptyBill');
+    billTotal = 0;
+    
+    // Remove all rows except header and empty row
+    while (billTable.rows.length > 2) {
+        billTable.deleteRow(1);
+    }
+    
+    if (billItems.length === 0) {
+        emptyRow.style.display = '';
+        document.getElementById('checkoutBtn').disabled = true;
+        document.getElementById('totalAmount').textContent = '0.00';
+    } else {
+        emptyRow.style.display = 'none';
+        document.getElementById('checkoutBtn').disabled = false;
+        
+        billItems.forEach(item => {
+            const row = billTable.insertRow(-1);
+            const itemTotal = item.price * item.quantity;
+            billTotal += itemTotal;
+            
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.price.toFixed(2)}</td>
+                <td>$${itemTotal.toFixed(2)}</td>
+                <td><button onclick="removeFromBill(${item.id})" class="button-small button-danger">Remove</button></td>
+            `;
+        });
+        
+        document.getElementById('totalAmount').textContent = billTotal.toFixed(2);
+    }
+}
+
+function clearBill() {
+    if (confirm('Are you sure you want to clear the bill?')) {
+        billItems = [];
+        updateBillDisplay();
+    }
+}
+
+function createOrder() {
+    if (billItems.length === 0) {
+        alert('Please add items to the bill');
+        return;
+    }
+    
+    fetch('/create_order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items: billItems })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Order created successfully! Order ID: ' + data.order_id);
+            billItems = [];
+            updateBillDisplay();
+            window.location.href = '/orders';
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Error creating order: ' + error);
+    });
+}
+</script>
+{% endblock %}
+

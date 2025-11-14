@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Welcome, {{ user.username }}!</h2>
+<div class="dashboard">
+    {% if user.role == 'admin' %}
+    <div class="dashboard-section">
+        <h3>Admin Functions</h3>
+        <a class="button" href="/menu">View Menu</a>
+        <a class="button" href="/add_item">Add Menu Item</a>
+        <a class="button" href="/orders">View All Orders</a>
+    </div>
+    {% else %}
+    <div class="dashboard-section">
+        <h3>Cashier Functions</h3>
+        <a class="button" href="/menu">View Menu</a>
+        <a class="button" href="/billing">Create Bill</a>
+        <a class="button" href="/orders">My Orders</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

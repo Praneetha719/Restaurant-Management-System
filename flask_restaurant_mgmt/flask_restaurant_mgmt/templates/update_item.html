@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Update Item</h2>
+<form method="post" class="form">
+    <label>Name:<br><input name="name" value="{{ item.name }}" required></label><br><br>
+    <label>Price:<br><input name="price" value="{{ item.price }}" required type="number" step="0.01" min="0"></label><br><br>
+    <button type="submit" class="button">Save Changes</button>
+    <a href="/menu" class="button button-secondary">Cancel</a>
+</form>
+{% endblock %}
